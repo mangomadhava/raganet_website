@@ -1,0 +1,77 @@
+{% extends "header.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        {# Network Prediction on Your Own Data #}
+        <form method="POST" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                {{ form.audio(class="form-control") }}
+            </div>
+            <div class = "form-group">
+                {{ form.actual.label(class="form-control-label") }}
+                {{ form.actual(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.submit() }}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if audio_encoded %}
+<div class="row">
+    <div class="col">
+        <figure>
+            <figcaption>Audio:</figcaption>
+            <audio
+                controls
+                src="data:audio/mp3;base64,{{audio_encoded}}">
+                    Your browser does not support the
+                    <code>audio</code> element.
+            </audio>
+        </figure>
+    </div>
+
+    <div class="col">
+        <h2>
+            {{predicted}}
+        </h2>
+    </div>
+
+
+    <div class="col">
+        <form action="" method="post">
+            {{result_form.csrf_token}}
+            <div class="form-group">
+                {{ result_form.result.label(class="form-control-label") }}
+                {{ result_form.result(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ result_form.submit() }}
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<div class="row">
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('users.user_detail', username=current_user.username) }}">
+            <i>Upload saved! Click here to see all your uploads</i>
+        </a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if not current_user.is_authenticated %}
+<div class="row">
+    <h6>
+        Register/Login to save audio and prediction.
+    </h6>
+</div>
+{% endif%}
+
+{% endblock %}
