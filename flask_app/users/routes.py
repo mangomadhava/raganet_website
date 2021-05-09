@@ -76,7 +76,7 @@ def account():
 @users.route("/user/<username>")
 @login_required
 def user_detail(username):
-    user = User.objects(username=username).first()
+    user = User.objects(username=current_user.username).first()
     user_audios = AudioFile.objects(user=user)
 
 
