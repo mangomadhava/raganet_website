@@ -21,6 +21,7 @@ def index():
     formatter = "{0:.2f}"
     acc = acc_object.correct / (acc_object.num_tries + 10e-10)
     acc = formatter.format(acc)
+    acc = acc * 100
     return render_template("index.html", acc = acc)
 
 
