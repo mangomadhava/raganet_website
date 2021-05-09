@@ -3,11 +3,15 @@
 
 
 <h1 id="raganet">RagaNet</h1>
-<h3 id="current-accuracy">Current Accuracy</h3>
 <h4>{{ acc }} % </h4>
-<p>This is the user reported accuracy of RagaNet. </p>
+<p>The current user reported accuracy of RagaNet. </p>
 <h3 id="what-is-it-">What is it?</h3>
-<p>RagaNet is a trained neural network model that predicts the South Indian raga from an audio file. Currently, it only supports the ragas Sudhhadhanyasi and Abheri. Click the 'Test It Yourself' tab to try it out for yourself. </p>
+<p>RagaNet is a trained neural network model that predicts the South Indian raga from an audio file.
+     Currently, it only supports the ragas Sudhhadhanyasi and Abheri with low accuracy :(
+</p>
+<a href="{{ url_for('model.info') }}">
+    <p>Click here to see learn more. </p>
+</a>
 
 
 {% endblock %}

@@ -16,13 +16,6 @@ from wtforms.validators import (
 
 from .models import User
 
-
-# class SearchForm(FlaskForm):
-#     search_query = StringField(
-#         "Query", validators=[InputRequired(), Length(min=1, max=100)]
-#     )
-#     submit = SubmitField("Search")
-
 class AudioForm(FlaskForm):
     audio = FileField(validators=[FileRequired()])
     actual = StringField(
@@ -30,12 +23,12 @@ class AudioForm(FlaskForm):
     )
     submit = SubmitField("Predict")
 
-# class MovieReviewForm(FlaskForm):
-#     text = TextAreaField(
-#         "Comment", validators=[InputRequired(), Length(min=5, max=500)]
-#     )
-#     submit = SubmitField("Enter Comment")
-#
+class MoreInfoForm(FlaskForm):
+    go = SubmitField("Go")
+    choose_raga = SelectField("Learn more", choices=[('https://www.ragasurabhi.com/carnatic-music/raga/raga--abheri.html', 'AbhEri'),
+            ( 'https://www.ragasurabhi.com/carnatic-music/raga/raga--suddha-dhanyasi.html', 'shuddhadhanyAsi')])
+
+
 class VerifyResultForm(FlaskForm):
     submit = SubmitField("Submit")
     result = SelectField("How did the model do?", choices=[('Correct', 'Correct'), ('Incorrect', 'Incorrect')])

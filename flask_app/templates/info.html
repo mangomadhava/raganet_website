@@ -1,0 +1,44 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h3 id="how-to-use-this-website">How to use this website</h3>
+<ul>
+<li>To test prediction on an mp3 file upload an audio in the &#39;Test It Yourself&#39; tab.</li>
+<li>To save the prediction you made, make an account or login. </li>
+<li><strong>Must be a .mp3 file</strong></li>
+<li><strong>Only the last five uploads will be saved</strong></li>
+</ul>
+<h3 id="what-is-a-raga-">What is a raga?</h3>
+<p>In North and South Indian classical music, a raga is a set of musical notes that are allowed to be used in a composition. A composition is said to be in a raga if it uses only the notes that are allowed in the raga. In South Indian classical music, there are 72 <em>melakartha</em> ragas and many more <em>janya</em> ragas. </p>
+<form action="" method="post">
+    {{ more_info.csrf_token }}
+    <div class="form-group">
+        {{ more_info.choose_raga.label(class="form-control-label") }}
+        {{ more_info.choose_raga(class="form-control form-control-lg") }}
+    </div>
+    <div class="form-group">
+        {{ more_info.go() }}
+    </div>
+</form>
+
+<img src="{{url_for('static', filename='Melakartha.png')}}" align="middle" />
+
+<h3 id="how-does-the-model-work-">How does the model work?</h3>
+<p>A <a href="https://arxiv.org/abs/1512.03385">ResNet 18</a>  model is trained to classify the correct raga from an audio clip. The data set used is taken from <a href="https://www.sangeethapriya.org/">Sangeethapriya</a> which had thousands of recordings free for use. </p>
+
+<img src="{{url_for('static', filename='resnet18.png')}}" align="middle" />
+
+<h4 id="steps-for-inference-on-website-">Steps for inference on website:</h4>
+<ol>
+<li>Convert uploaded audio from MP3 format to an array. </li>
+<li>Sample the first 30 seconds. </li>
+<li>Create a <a href="https://medium.com/analytics-vidhya/understanding-the-mel-spectrogram-fca2afa2ce53">MelSpectrogram</a> of the audio sample. </li>
+<li>Run through the model. </li>
+<li>Display prediction and audio on the website. </li>
+</ol>
+
+<img src="{{url_for('static', filename='mel_spectrogram.png')}}" align="middle" />
+<p>Code is available on <a href="https://github.com/mangomadhava/raganet">github</a>. </p>
+
+
+{% endblock %}

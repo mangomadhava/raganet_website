@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, redirect, request, flash
 from flask_login import current_user
 
 # from .. import movie_client
-from ..forms import  AudioForm, VerifyResultForm
+from ..forms import  AudioForm, VerifyResultForm, MoreInfoForm
 from ..models import User, AudioFile, Accuracy
 from ..utils import current_time
 import io
@@ -21,19 +21,21 @@ def index():
     formatter = "{0:.2f}"
     acc = acc_object.correct / (acc_object.num_tries + 10e-10)
     acc = formatter.format(acc)
-    acc = acc * 100
+    acc = str(float(acc) * 100)
     return render_template("index.html", acc = acc)
+
+@model.route("/info", methods = ["GET", "POST"])
+def info():
+    more_info = MoreInfoForm()
+    if more_info.validate_on_submit():
+        return redirect(more_info.choose_raga.data)
+    return render_template("info.html", more_info = more_info)
 
 
 @model.route("/prediction", methods = ["GET", "POST"])
 def prediction():
     form = AudioForm()
     result_form = VerifyResultForm()
-    # acc_object = Accuracy.objects()
-    # print(len(acc_object))
-    # acc_object = acc_object[0]
-    # print(acc_object.num_tries, acc_object.correct)
-
     if form.validate_on_submit():
         a = form.audio.data
         filename = secure_filename(a.filename)
@@ -76,41 +78,3 @@ def prediction():
         return redirect(url_for("model.index"))
 
     return render_template("prediction.html", form = form)
-#
-# @model.route("/search-results/<query>", methods=["GET"])
-# def query_results(query):
-#     try:
-#         results = movie_client.search(query)
-#     except ValueError as e:
-#         flash(str(e))
-#         return redirect(url_for("movies.index"))
-#
-#     return render_template("query.html", results=results)
-#
-#
-# @model.route("/movies/<movie_id>", methods=["GET", "POST"])
-# def movie_detail(movie_id):
-#     try:
-#         result = movie_client.retrieve_movie_by_id(movie_id)
-#     except ValueError as e:
-#         flash(str(e))
-#         return redirect(url_for("users.login"))
-#
-#     form = MovieReviewForm()
-#     if form.validate_on_submit() and current_user.is_authenticated:
-#         review = Review(
-#             commenter=current_user._get_current_object(),
-#             content=form.text.data,
-#             date=current_time(),
-#             imdb_id=movie_id,
-#             movie_title=result.title,
-#         )
-#         review.save()
-#
-#         return redirect(request.path)
-#
-#     reviews = Review.objects(imdb_id=movie_id)
-#
-#     return render_template(
-#         "movie_detail.html", form=form, movie=result, reviews=reviews
-#     )
