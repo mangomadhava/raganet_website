@@ -12,7 +12,7 @@ from wtforms.validators import (
     EqualTo,
     ValidationError,
 )
-
+import string
 
 from .models import User
 
@@ -38,7 +38,7 @@ class RegistrationForm(FlaskForm):
         "Username", validators=[InputRequired(), Length(min=1, max=40)]
     )
     email = StringField("Email", validators=[InputRequired(), Email()])
-    password = PasswordField("Password", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired(), Length(min = 8)])
     confirm_password = PasswordField(
         "Confirm Password", validators=[InputRequired(), EqualTo("password")]
     )
@@ -53,6 +53,13 @@ class RegistrationForm(FlaskForm):
         user = User.objects(email=email.data).first()
         if user is not None:
             raise ValidationError("Email is taken")
+
+    def validate_password(self, password):
+        upper = any(l.isupper() for l in password.data)
+        sp_chr = any(l in string.punctuation for l in password.data)
+        if (not upper) or (not sp_chr):
+            raise ValidationError("Password must have one uppercase and one special character")
+
 
 
 class LoginForm(FlaskForm):

@@ -40,6 +40,11 @@ def prediction():
         a = form.audio.data
         filename = secure_filename(a.filename)
         content_type = f'audio/{filename[-3:]}'
+        print(content_type == 'audio/mp3')
+        if content_type != 'audio/mp3':
+            flash('Please Upload An .mp3 File!')
+            return redirect(url_for("model.prediction"))
+
         audio_obj = AudioFile()
         audio_obj.audio.put(a.stream, content_type = content_type)
 
@@ -51,8 +56,12 @@ def prediction():
         recording = AudioSegment.from_file(bytes_im, format="mp3")
         filename = './temp/' + current_time() + '.mp3'
         recording.export(filename, format='mp3')
-
-        raga_name_predicted = predict(filename)
+        try:
+            raga_name_predicted = predict(filename)
+        except:
+            flash('Something went wrong! Try again with an audio clip of at least 30 seconds.')
+            os.remove(filename)
+            return redirect(url_for("model.prediction"))
         os.remove(filename)
 
         if current_user.is_authenticated:
