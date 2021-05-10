@@ -28,17 +28,17 @@
 
 <img src="{{url_for('static', filename='resnet18.png')}}" align="middle" />
 
-<h4 id="steps-for-inference-on-website-">Steps for inference on website:</h4>
+<h3 id="steps-for-inference-on-website-">What happens when an audio clip is uploaded?:</h3>
 <ol>
 <li>Convert uploaded audio from MP3 format to an array. </li>
 <li>Sample the first 30 seconds. </li>
 <li>Create a <a href="https://medium.com/analytics-vidhya/understanding-the-mel-spectrogram-fca2afa2ce53">MelSpectrogram</a> of the audio sample. </li>
-<li>Run through the model. </li>
+<li>Run through the ResNet 18 model. </li>
 <li>Display prediction and audio on the website. </li>
 </ol>
 
 <img src="{{url_for('static', filename='mel_spectrogram.png')}}" align="middle" />
 <p>Code is available on <a href="https://github.com/mangomadhava/raganet">github</a>. </p>
-
+<p>Created by <a href="https://www.linkedin.com/in/madhava-paliyam/">Madhava Paliyam </a>. </p>
 
 {% endblock %}
