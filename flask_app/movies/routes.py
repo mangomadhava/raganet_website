@@ -20,8 +20,9 @@ def index():
     acc_object = Accuracy.objects()[0]
     formatter = "{0:.2f}"
     acc = acc_object.correct / (acc_object.num_tries + 10e-10)
-    acc = str(float(acc) * 100)
+    acc = float(acc) * 100
     acc = formatter.format(acc)
+    acc = str(acc)
     return render_template("index.html", acc = acc)
 
 @model.route("/info", methods = ["GET", "POST"])
