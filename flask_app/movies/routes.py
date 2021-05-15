@@ -9,6 +9,7 @@ import io
 import base64
 import os
 from pydub import AudioSegment
+import pydub
 from werkzeug.utils import secure_filename
 from ..client import *
 
@@ -53,8 +54,11 @@ def prediction():
         bytes_im = io.BytesIO(audio_obj.audio.read())
         audio_encoded = base64.b64encode(bytes_im.getvalue()).decode()
 
-
-        recording = AudioSegment.from_file(bytes_im, format="mp3")
+        try:
+            recording = AudioSegment.from_file(bytes_im, format="mp3")
+        except pydub.exceptions.CouldntDecodeError:
+            flash('FFMPEG could not decode this audio. Please try a different mp3. ')
+            return redirect(url_for("model.prediction"))
         filename = './temp/' + current_time() + '.mp3'
         recording.export(filename, format='mp3')
         try:
